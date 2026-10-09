@@ -1,9 +1,10 @@
 package com.grupoMonster.inciApp.service;
 
-import com.grupoMonster.inciApp.dto.RoleRequestDTO;
+import com.grupoMonster.inciApp.dto.request.RoleRequestDTO;
 import com.grupoMonster.inciApp.model.Permission;
 import com.grupoMonster.inciApp.model.Role;
 import com.grupoMonster.inciApp.repository.IRoleRepository;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,41 +37,32 @@ public class RoleService implements IRoleService {
         Role role = new Role();
         role.setRole(roleDTO.getRole());
 
-        Set<Permission> permissionList = new HashSet<>();
-        Permission readPermission;
-
-        //Recuperar el Permission/s por su ID
-        for (Long permissionId : roleDTO.getPermissionsList()) {
-            readPermission = permissionService.findById(permissionId).orElse(null);
-            if (readPermission != null) {
-                permissionList.add(readPermission);
-            }
-        }
-        role.setPermissionsList(permissionList);
+        role.setPermissionsList(cargarLista(roleDTO.getPermissionsList()));
 
         return roleRepo.save(role);
     }
 
-    @Override
-    public Role update(Long id, RoleRequestDTO roleDTO) {
-        Role updatedRole = findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-
+    private Set<Permission> cargarLista(@NotEmpty List<Long> permissions) {
         Set<Permission> permissionList = new HashSet<>();
         Permission readPermission;
 
         //Recuperar el Permission/s por su ID
-        for (Long permissionId : roleDTO.getPermissionsList()) {
+        for (Long permissionId : permissions) {
             readPermission = permissionService.findById(permissionId).orElse(null);
             if (readPermission != null) {
                 permissionList.add(readPermission);
             }
         }
+        return permissionList;
+    }
 
+    @Override
+    public Role update(Long id, RoleRequestDTO roleDTO) {
+        Role updatedRole = roleRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
 
         updatedRole.setRole(roleDTO.getRole());
-        updatedRole.setPermissionsList(permissionList);
-
+        updatedRole.setPermissionsList(cargarLista(roleDTO.getPermissionsList()));
 
         return roleRepo.save(updatedRole);
     }
@@ -78,5 +70,10 @@ public class RoleService implements IRoleService {
     @Override
     public void delete(Long id) {
         roleRepo.deleteById(id);
+    }
+
+    @Override
+    public Optional<Role> findByName(String name) {
+        return roleRepo.findByRole(name);
     }
 }

@@ -1,6 +1,7 @@
 package com.grupoMonster.inciApp.controller;
 
-import com.grupoMonster.inciApp.dto.UsuarioRequestDTO;
+import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
+import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
 import com.grupoMonster.inciApp.model.Usuario;
 import com.grupoMonster.inciApp.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updeteUsuario(@PathVariable String id, @RequestBody UsuarioRequestDTO userDTO){
+    public ResponseEntity updeteUsuario(@PathVariable String id, @RequestBody UsuarioUpdateRequestDTO userDTO){
         Usuario updatedUser = userService.update(id, userDTO);
         return ResponseEntity.ok(updatedUser);
     }

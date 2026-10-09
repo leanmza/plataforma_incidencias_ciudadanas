@@ -1,6 +1,6 @@
 package com.grupoMonster.inciApp.service;
 
-import com.grupoMonster.inciApp.dto.RoleRequestDTO;
+import com.grupoMonster.inciApp.dto.request.RoleRequestDTO;
 import com.grupoMonster.inciApp.model.Role;
 
 import java.util.List;
@@ -16,4 +16,6 @@ public interface IRoleService {
     Role update(Long id, RoleRequestDTO roleDTO);
 
     void delete(Long id);
+
+    Optional<Role> findByName(String defaultRole);
 }

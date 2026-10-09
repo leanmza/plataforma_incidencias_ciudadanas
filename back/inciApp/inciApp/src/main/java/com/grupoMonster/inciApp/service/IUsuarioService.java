@@ -1,6 +1,7 @@
 package com.grupoMonster.inciApp.service;
 
-import com.grupoMonster.inciApp.dto.UsuarioRequestDTO;
+import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
+import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
 import com.grupoMonster.inciApp.model.Usuario;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface IUsuarioService {
 
     Usuario save(UsuarioRequestDTO userDTO);
 
-    Usuario update(String id, UsuarioRequestDTO userDTO);
+    Usuario update(String id, UsuarioUpdateRequestDTO userDTO);
 
     Usuario delete(String id);
 
