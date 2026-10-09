@@ -1,6 +1,6 @@
 package com.grupoMonster.inciApp.service;
 
-import com.grupoMonster.inciApp.dto.PermissionRequestDTO;
+import com.grupoMonster.inciApp.dto.request.PermissionRequestDTO;
 import com.grupoMonster.inciApp.model.Permission;
 
 import java.util.List;

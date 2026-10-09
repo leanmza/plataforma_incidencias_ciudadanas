@@ -1,6 +1,7 @@
 package com.grupoMonster.inciApp.service;
 
-import com.grupoMonster.inciApp.dto.UsuarioRequestDTO;
+import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
+import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
 import com.grupoMonster.inciApp.model.Role;
 import com.grupoMonster.inciApp.model.Usuario;
 import com.grupoMonster.inciApp.repository.IUsuarioRepository;
@@ -15,6 +16,8 @@ import java.util.Set;
 
 @Service
 public class UsuarioService implements IUsuarioService {
+
+    private static final String DEFAULT_ROLE = "USER";
 
     @Autowired
     private IUsuarioRepository userRepo;
@@ -37,15 +40,9 @@ public class UsuarioService implements IUsuarioService {
     public Usuario save(UsuarioRequestDTO userDTO) {
         Usuario user = new Usuario();
 
-        Set<Role> rolesList = new HashSet<>();
-        Role readRole;
-
-        for (Long roleId : userDTO.getRolesList()) {
-              readRole = roleService.findById(roleId).orElse(null);
-            if (readRole != null) {
-                rolesList.add(readRole);
-            }
-        }
+        //Se asigna automaticamente el rol user a todos los usuarios nuevos, solo los admin pueden cambiar el rol
+        Role defaultRole = roleService.findByName(DEFAULT_ROLE)
+                .orElseThrow(()-> new RuntimeException("No existe el rol por defecto " + DEFAULT_ROLE));
 
         user.setName(userDTO.getName());
         user.setLastname(userDTO.getLastname());
@@ -62,7 +59,7 @@ public class UsuarioService implements IUsuarioService {
         user.setProvincia //todo hacer entidad, repo, service, controller
          */
 
-        user.setRolesList(rolesList);
+        user.setRolesList(new HashSet<>(Set.of(defaultRole)));
         user.setEnabled(true);
         user.setAccountNotExpired(true);
         user.setAccountNotLocked(true);
@@ -72,24 +69,16 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public Usuario update(String id, UsuarioRequestDTO userDTO) {
+    public Usuario update(String id, UsuarioUpdateRequestDTO userDTO) {
         Usuario updatedUser = findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Set<Role> rolesList = new HashSet<>();
-        Role readRole;
-
-        for (Long roleId : userDTO.getRolesList()) {
-            readRole = roleService.findById(roleId).orElse(null);
-            if (readRole != null) {
-                rolesList.add(readRole);
-            }
-        }
 
         updatedUser.setName(userDTO.getName());
         updatedUser.setLastname(userDTO.getLastname());
-        updatedUser.setUsername(userDTO.getUsername());
-        updatedUser.setPassword(encriptPassword(userDTO.getPassword()));
+        if (!userDTO.getPassword().isBlank() || userDTO.getPassword().isEmpty()) {
+            updatedUser.setPassword(encriptPassword(userDTO.getPassword()));
+        }
         updatedUser.setEmail(userDTO.getEmail());
         updatedUser.setDni(userDTO.getDni());
         updatedUser.setTelefono(userDTO.getTelefono());
@@ -100,8 +89,6 @@ public class UsuarioService implements IUsuarioService {
         updatedUser.setDepartamento //todo hacer entidad, repo, service, controller
         updatedUser.setProvincia //todo hacer entidad, repo, service, controller
          */
-        updatedUser.setRolesList(rolesList);
-
         return userRepo.save(updatedUser);
     }
 

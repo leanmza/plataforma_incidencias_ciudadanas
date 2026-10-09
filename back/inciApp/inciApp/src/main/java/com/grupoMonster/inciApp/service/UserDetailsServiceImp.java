@@ -1,7 +1,7 @@
 package com.grupoMonster.inciApp.service;
 
-import com.grupoMonster.inciApp.dto.AuthLoginRequestDTO;
-import com.grupoMonster.inciApp.dto.AuthResponseDTO;
+import com.grupoMonster.inciApp.dto.request.AuthLoginRequestDTO;
+import com.grupoMonster.inciApp.dto.response.AuthResponseDTO;
 import com.grupoMonster.inciApp.model.Usuario;
 import com.grupoMonster.inciApp.repository.IUsuarioRepository;
 import com.grupoMonster.inciApp.utils.JwtUtils;
@@ -36,7 +36,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = userRepo.findUserEntityByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User " + username + "was not found"));
+        Usuario usuario = userRepo.findUserEntityByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User " + username + "was not found"));
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
 

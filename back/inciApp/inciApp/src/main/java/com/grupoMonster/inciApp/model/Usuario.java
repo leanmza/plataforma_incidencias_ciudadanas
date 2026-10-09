@@ -38,12 +38,18 @@ public class Usuario {
     private String telefono;
     private String direccion;
     private LocalDate fechaNacimiento;
-/*    @ManyToOne
+
+    @ManyToOne
+    @JoinColumn(name = "id_localidad")
     private Localidad localidad;
+
     @ManyToOne
+    @JoinColumn(name= "id_departamento")
     private Departamento departamento;
-    @ManyToOne
-    private Provincia provincia;*/
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_provincia", nullable = false)
+    private Provincia provincia;
 
     private boolean enabled;
     private boolean accountNotExpired;

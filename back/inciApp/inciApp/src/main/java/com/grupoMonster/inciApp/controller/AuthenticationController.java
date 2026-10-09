@@ -1,6 +1,6 @@
 package com.grupoMonster.inciApp.controller;
 
-import com.grupoMonster.inciApp.dto.AuthLoginRequestDTO;
+import com.grupoMonster.inciApp.dto.request.AuthLoginRequestDTO;
 import com.grupoMonster.inciApp.service.UserDetailsServiceImp;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
