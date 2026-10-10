@@ -2,7 +2,7 @@ package com.grupoMonster.inciApp.controller;
 
 import com.grupoMonster.inciApp.dto.request.RoleRequestDTO;
 import com.grupoMonster.inciApp.model.Role;
-import com.grupoMonster.inciApp.service.IRoleService;
+import com.grupoMonster.inciApp.service.imp.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

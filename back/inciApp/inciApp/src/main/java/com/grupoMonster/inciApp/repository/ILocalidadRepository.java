@@ -6,5 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ILocalidadRepository extends JpaRepository<Localidad, Long> {
-    //todo falta hacer repositorio, IService, service, dto's, controller de localidad, departamento, provincia, estado, tipo, incidente y prioridad
+    //todo falta hacer
+    // IService, service, dto's,
+    // controller de localidad, departamento,
+    // provincia, estado, tipo, incidente y prioridad
 }

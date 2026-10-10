@@ -2,7 +2,7 @@ package com.grupoMonster.inciApp.controller;
 
 import com.grupoMonster.inciApp.dto.request.PermissionRequestDTO;
 import com.grupoMonster.inciApp.model.Permission;
-import com.grupoMonster.inciApp.service.IPermissionService;
+import com.grupoMonster.inciApp.service.imp.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -5,6 +5,8 @@ import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
 import com.grupoMonster.inciApp.model.Role;
 import com.grupoMonster.inciApp.model.Usuario;
 import com.grupoMonster.inciApp.repository.IUsuarioRepository;
+import com.grupoMonster.inciApp.service.imp.IRoleService;
+import com.grupoMonster.inciApp.service.imp.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

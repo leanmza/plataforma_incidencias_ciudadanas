@@ -3,7 +3,7 @@ package com.grupoMonster.inciApp.controller;
 import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
 import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
 import com.grupoMonster.inciApp.model.Usuario;
-import com.grupoMonster.inciApp.service.IUsuarioService;
+import com.grupoMonster.inciApp.service.imp.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

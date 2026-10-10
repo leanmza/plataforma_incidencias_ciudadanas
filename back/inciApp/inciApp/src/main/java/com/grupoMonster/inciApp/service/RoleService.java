@@ -4,6 +4,8 @@ import com.grupoMonster.inciApp.dto.request.RoleRequestDTO;
 import com.grupoMonster.inciApp.model.Permission;
 import com.grupoMonster.inciApp.model.Role;
 import com.grupoMonster.inciApp.repository.IRoleRepository;
+import com.grupoMonster.inciApp.service.imp.IPermissionService;
+import com.grupoMonster.inciApp.service.imp.IRoleService;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

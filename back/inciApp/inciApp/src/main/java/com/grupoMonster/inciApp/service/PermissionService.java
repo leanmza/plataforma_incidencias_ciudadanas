@@ -3,6 +3,7 @@ package com.grupoMonster.inciApp.service;
 import com.grupoMonster.inciApp.dto.request.PermissionRequestDTO;
 import com.grupoMonster.inciApp.model.Permission;
 import com.grupoMonster.inciApp.repository.IPermissionRepository;
+import com.grupoMonster.inciApp.service.imp.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
