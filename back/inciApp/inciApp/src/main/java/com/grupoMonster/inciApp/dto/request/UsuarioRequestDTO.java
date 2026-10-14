@@ -51,14 +51,12 @@ public class UsuarioRequestDTO {
     @NotBlank(message = "La fecha de nacimiento no puede estar en blanco")
     LocalDate fechaNacimiento;
 
-    /*
      @NotBlank
      Long idLocalidad;
      @NotBlank
       Long idDepartamento;
      @NotBlank
       Long idProvincia;
-    */
 
 
 

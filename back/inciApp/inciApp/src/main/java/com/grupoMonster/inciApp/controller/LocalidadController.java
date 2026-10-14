@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/localidades")
 public class LocalidadController {
+
     @Autowired
     private ILocalidadService localidadService;
 

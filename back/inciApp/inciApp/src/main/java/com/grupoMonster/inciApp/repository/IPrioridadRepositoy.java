@@ -4,6 +4,9 @@ import com.grupoMonster.inciApp.model.Prioridad;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface IPrioridadRepositoy extends JpaRepository<Prioridad,Long> {
+    Optional<Prioridad> findByPrioridad(String prioridad);
 }

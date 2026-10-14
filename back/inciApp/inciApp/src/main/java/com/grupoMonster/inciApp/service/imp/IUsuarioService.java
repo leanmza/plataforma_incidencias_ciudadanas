@@ -2,21 +2,23 @@ package com.grupoMonster.inciApp.service.imp;
 
 import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
 import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
+import com.grupoMonster.inciApp.dto.response.UsuarioResponseDTO;
 import com.grupoMonster.inciApp.model.Usuario;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IUsuarioService {
-    List<Usuario> findAll();
+    List<UsuarioResponseDTO> findAll();
 
-    Optional<Usuario> findById(String id);
+    UsuarioResponseDTO findById(String id);
 
-    Usuario save(UsuarioRequestDTO userDTO);
+    UsuarioResponseDTO save(UsuarioRequestDTO userDTO);
 
-    Usuario update(String id, UsuarioUpdateRequestDTO userDTO);
+    UsuarioResponseDTO update(String id, UsuarioUpdateRequestDTO userDTO);
 
-    Usuario delete(String id);
+    UsuarioResponseDTO delete(String id);
 
     String encriptPassword(String password);
+
+    Usuario findByUsername(String username);
 }

@@ -2,6 +2,7 @@ package com.grupoMonster.inciApp.controller;
 
 import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
 import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
+import com.grupoMonster.inciApp.dto.response.UsuarioResponseDTO;
 import com.grupoMonster.inciApp.model.Usuario;
 import com.grupoMonster.inciApp.service.imp.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,32 +20,31 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List> getAllUsers(){
-        List<Usuario> usuarios = userService.findAll();
+        List<UsuarioResponseDTO> usuarios = userService.findAll();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getUsuarioById(@PathVariable String id){
-        Optional<Usuario> user = userService.findById(id);
-        return user.map(ResponseEntity::ok)
-                .orElseGet(()->ResponseEntity.notFound().build());
+        UsuarioResponseDTO usuario = userService.findById(id);
+        return ResponseEntity.ok(usuario);
     }
 
     @PostMapping
     public ResponseEntity createUsuario(@RequestBody UsuarioRequestDTO userDTO){
-        Usuario newUser = userService.save(userDTO);
+        UsuarioResponseDTO newUser = userService.save(userDTO);
         return ResponseEntity.ok(newUser);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity updeteUsuario(@PathVariable String id, @RequestBody UsuarioUpdateRequestDTO userDTO){
-        Usuario updatedUser = userService.update(id, userDTO);
+        UsuarioResponseDTO updatedUser = userService.update(id, userDTO);
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUsuario(@PathVariable String id){
-        Usuario deletedUser = userService.delete(id);
+        UsuarioResponseDTO deletedUser = userService.delete(id);
         return ResponseEntity.ok(deletedUser);
     }
 }
