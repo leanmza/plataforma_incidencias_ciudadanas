@@ -7,34 +7,21 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class UsuarioResponseDTO {
-    private String id;
 
-    private String username;
-    private String name;
-    private String lastname;
-
-    private String email;
-
-    private String dni;
-    private String telefono;
-    private String direccion;
-    private LocalDate fechaNacimiento;
-
-    private LocalidadNombreResponseDTO localidad;
-
-    private DepartamentoNombreResponseDTO departamento;
-
-    private ProvinciaNombreResponseDTO provincia;
-
-    private boolean enabled;
-    private boolean accountNotExpired;
-    private boolean accountNotLocked;
-    private boolean credentialNotExpired;
-
-
+public record UsuarioResponseDTO(String id,
+                                 String username,
+                                 String name,
+                                 String lastname,
+                                 String email,
+                                 String dni,
+                                 String telefono,
+                                 String direccion,
+                                 LocalDate fechaNacimiento,
+                                 LocalidadNombreResponseDTO localidad,
+                                 DepartamentoNombreResponseDTO departamento,
+                                 ProvinciaNombreResponseDTO provincia,
+                                 boolean enabled,
+                                 boolean accountNotExpired,
+                                 boolean accountNotLocked,
+                                 boolean credentialNotExpired) {
 }

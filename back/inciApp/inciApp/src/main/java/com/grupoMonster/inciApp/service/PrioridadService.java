@@ -42,7 +42,7 @@ public class PrioridadService implements IPrioridadService {
     @Override
     public PrioridadResponseDTO update(Long id, PrioridadRequestDTO prioridad) {
         Prioridad updatedPrioridad = findPrioridad(id);
-        updatedPrioridad.setPrioridad(prioridad.prioridad());
+        updatedPrioridad.setPrioridad(prioridad.getPrioridad());
         prioridadRepo.save(updatedPrioridad);
         return prioridadMapper.toPrioridadResponseDTO(updatedPrioridad);
     }

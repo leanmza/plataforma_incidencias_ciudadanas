@@ -1,6 +1,17 @@
 package com.grupoMonster.inciApp.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public record PermissionRequestDTO(@NotBlank String permission) {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PermissionRequestDTO {
+
+    @NotBlank
+    private String permission;
 }

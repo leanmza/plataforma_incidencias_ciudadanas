@@ -6,15 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class DepartamentoResponseDTO {
+public record DepartamentoResponseDTO( Long id, String nombre, ProvinciaNombreResponseDTO provincia) {
 
-    private Long id;
-
-    private String nombre;
-
-    private ProvinciaNombreResponseDTO provincia;
+//    private Long id;
+//
+//    private String nombre;
+//
+//    private ProvinciaNombreResponseDTO provincia;
 }

@@ -3,7 +3,6 @@ package com.grupoMonster.inciApp.service;
 import com.grupoMonster.inciApp.dto.request.EstadoUpdateRequestDTO;
 import com.grupoMonster.inciApp.dto.request.IncidenteRequestDTO;
 import com.grupoMonster.inciApp.dto.request.PrioridadUpdateRequestDTO;
-import com.grupoMonster.inciApp.dto.response.EstadoResponseDTO;
 import com.grupoMonster.inciApp.dto.response.IncidenteResponseDTO;
 import com.grupoMonster.inciApp.mapper.IIncidenteMapper;
 import com.grupoMonster.inciApp.model.*;

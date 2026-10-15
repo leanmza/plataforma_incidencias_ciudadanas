@@ -2,7 +2,6 @@ package com.grupoMonster.inciApp.controller;
 
 import com.grupoMonster.inciApp.dto.request.ProvinciaRequestDTO;
 import com.grupoMonster.inciApp.dto.response.ProvinciaResponseDTO;
-import com.grupoMonster.inciApp.model.Provincia;
 import com.grupoMonster.inciApp.service.imp.IProvinciaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
