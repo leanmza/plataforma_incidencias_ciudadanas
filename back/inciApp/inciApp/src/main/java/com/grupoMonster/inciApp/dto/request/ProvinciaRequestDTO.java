@@ -12,7 +12,6 @@ import lombok.Setter;
 public class ProvinciaRequestDTO {
 
     @NotBlank(message = "El nombre no puede estar en blanco")
-    @NotEmpty(message = "El nombre no puede estar vacio")
     private String nombre;
 
 }

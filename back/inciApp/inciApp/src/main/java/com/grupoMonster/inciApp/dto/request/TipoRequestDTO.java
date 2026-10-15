@@ -14,6 +14,6 @@ import lombok.Setter;
 public class TipoRequestDTO {
 
     @NotBlank(message = "El tipo no puede estar en blanco")
-    @NotEmpty(message = "El tipo no puede estar vacio")
+
     private String tipo;
 }

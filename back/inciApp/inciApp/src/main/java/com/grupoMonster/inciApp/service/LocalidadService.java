@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LocalidadService implements ILocalidadService {
@@ -46,7 +45,7 @@ public class LocalidadService implements ILocalidadService {
         Departamento departamento = departamentoRepo.findById(localidad.getDepartamentoId())
                 .orElseThrow(()->new RuntimeException("Departamento no encontrado"));
 
-        Localidad newLocalidad = new Localidad();
+        Localidad newLocalidad = localidadMapper.toLocalidad(localidad);
         newLocalidad.setNombre(localidad.getNombre());
         newLocalidad.setDepartamento(departamento);
 

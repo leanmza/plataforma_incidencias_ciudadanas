@@ -55,7 +55,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public UsuarioResponseDTO save(UsuarioRequestDTO userDTO) {
-        Usuario user = new Usuario();
+        Usuario user = userMapper.toUsuario(userDTO);
 
         //Se asigna automaticamente el rol user a todos los usuarios nuevos, solo los admin pueden cambiar el rol
         Role defaultRole = roleService.findByName(DEFAULT_ROLE)
@@ -66,15 +66,9 @@ public class UsuarioService implements IUsuarioService {
         Localidad localidad = localidadService.findLocalidad(userDTO.getIdLocalidad());
 
 
-        user.setName(userDTO.getName());
-        user.setLastname(userDTO.getLastname());
-        user.setUsername(userDTO.getUsername());
+
         user.setPassword(encriptPassword(userDTO.getPassword()));
-        user.setEmail(userDTO.getEmail());
-        user.setDni(userDTO.getDni());
-        user.setTelefono(userDTO.getTelefono());
-        user.setDireccion(userDTO.getDireccion());
-        user.setFechaNacimiento(userDTO.getFechaNacimiento());
+
         user.setLocalidad(localidad);
         user.setDepartamento(departamento);
         user.setProvincia(provincia);

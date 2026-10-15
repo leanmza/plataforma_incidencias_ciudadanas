@@ -28,7 +28,7 @@ public class PermissionService implements IPermissionService {
     @Override
     public Permission save(PermissionRequestDTO permissionDTO) {
         Permission permission = new Permission();
-        permission.setPermission(permissionDTO.permission());
+        permission.setPermission(permissionDTO.getPermission());
         return permissionRepo.save(permission);
     }
 
@@ -36,7 +36,7 @@ public class PermissionService implements IPermissionService {
     public Permission update(Long id, PermissionRequestDTO permissionDTO) {
         Permission updatedPermission = findById(id)
                 .orElseThrow(() -> new RuntimeException("Permission not found"));
-        updatedPermission.setPermission(permissionDTO.permission());
+        updatedPermission.setPermission(permissionDTO.getPermission());
         return permissionRepo.save(updatedPermission);
     }
 

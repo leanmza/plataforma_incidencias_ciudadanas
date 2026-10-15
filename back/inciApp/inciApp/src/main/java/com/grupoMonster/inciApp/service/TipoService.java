@@ -43,7 +43,7 @@ public class TipoService implements ITipoService {
     public TipoResponseDTO update(Long id, TipoRequestDTO tipo) {
         Tipo updatedTipo = findTipo(id);
 
-        updatedTipo.setTipo(tipo.tipo());
+        updatedTipo.setTipo(tipo.getTipo());
         tipoRepo.save(updatedTipo);
         return tipoMapper.toTipoResponseDTO(updatedTipo);
     }

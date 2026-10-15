@@ -39,7 +39,7 @@ public class DepartamentoService implements IDepartamentoService {
 
     @Override
     public DepartamentoResponseDTO save(DepartamentoRequestDTO departamentoRequestDTO) {
-        Departamento newDepartamento = new Departamento();
+        Departamento newDepartamento = departamentoMapper.toDepartamento(departamentoRequestDTO);
 
         Provincia provincia = provinciaRepo.findById(departamentoRequestDTO.getProvinciaId())
                 .orElseThrow(() -> new RuntimeException("Provincia no encontrada"));

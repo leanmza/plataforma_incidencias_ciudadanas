@@ -14,6 +14,6 @@ import lombok.Setter;
 public class PrioridadRequestDTO  {
 
     @NotBlank(message = "La prioridad no puede estar en blanco")
-    @NotEmpty(message = "La prioridad no puede estar vacia")
+
     private String prioridad;
 }

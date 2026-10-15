@@ -4,6 +4,7 @@ import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
 import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
 import com.grupoMonster.inciApp.dto.response.UsuarioResponseDTO;
 import com.grupoMonster.inciApp.service.imp.IUsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity createUsuario(@RequestBody UsuarioRequestDTO userDTO){
+    public ResponseEntity createUsuario(@RequestBody @Valid UsuarioRequestDTO userDTO){
         UsuarioResponseDTO newUser = userService.save(userDTO);
         return ResponseEntity.ok(newUser);
     }
