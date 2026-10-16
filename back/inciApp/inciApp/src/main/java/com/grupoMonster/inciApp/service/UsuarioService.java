@@ -66,7 +66,6 @@ public class UsuarioService implements IUsuarioService {
         Localidad localidad = localidadService.findLocalidad(userDTO.getIdLocalidad());
 
 
-
         user.setPassword(encriptPassword(userDTO.getPassword()));
 
         user.setLocalidad(localidad);

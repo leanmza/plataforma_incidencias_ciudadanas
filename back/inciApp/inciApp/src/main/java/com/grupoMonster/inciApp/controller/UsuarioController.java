@@ -42,6 +42,7 @@ public class UsuarioController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    //No borra al usuario de la BD, le cambia enabled a false
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUsuario(@PathVariable String id){
         UsuarioResponseDTO deletedUser = userService.delete(id);
