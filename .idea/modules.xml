@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/plataforma_incidencias_ciudadanas.iml" filepath="$PROJECT_DIR$/.idea/plataforma_incidencias_ciudadanas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/inciApp.iml" filepath="$PROJECT_DIR$/.idea/inciApp.iml" />
     </modules>
   </component>
 </project>
