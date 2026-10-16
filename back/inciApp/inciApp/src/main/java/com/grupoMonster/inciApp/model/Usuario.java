@@ -1,6 +1,7 @@
 package com.grupoMonster.inciApp.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
 
 import java.time.LocalDate;

@@ -1,12 +1,13 @@
 package com.grupoMonster.inciApp.controller;
 
-import com.grupoMonster.inciApp.dto.request.EstadoRequestDTO;
+
 import com.grupoMonster.inciApp.dto.request.EstadoUpdateRequestDTO;
 import com.grupoMonster.inciApp.dto.request.IncidenteRequestDTO;
 import com.grupoMonster.inciApp.dto.request.PrioridadUpdateRequestDTO;
 import com.grupoMonster.inciApp.dto.response.IncidenteResponseDTO;
 import com.grupoMonster.inciApp.service.imp.IIncidenteService;
-import org.hibernate.annotations.OptimisticLock;
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class IncidenteController {
     }
 
     @PostMapping
-    public ResponseEntity createIncidente(@RequestBody IncidenteRequestDTO incidente) {
+    public ResponseEntity createIncidente(@RequestBody @Valid  IncidenteRequestDTO incidente) {
         IncidenteResponseDTO newIncidente = incidenteService.save(incidente);
         return ResponseEntity.ok(newIncidente);
     }

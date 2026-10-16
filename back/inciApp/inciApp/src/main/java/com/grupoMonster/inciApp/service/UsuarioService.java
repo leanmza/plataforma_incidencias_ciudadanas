@@ -3,6 +3,7 @@ package com.grupoMonster.inciApp.service;
 import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
 import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
 import com.grupoMonster.inciApp.dto.response.UsuarioResponseDTO;
+import com.grupoMonster.inciApp.exception.DuplicateResourceException;
 import com.grupoMonster.inciApp.mapper.IUserMapper;
 import com.grupoMonster.inciApp.model.*;
 import com.grupoMonster.inciApp.repository.IUsuarioRepository;
@@ -55,6 +56,17 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public UsuarioResponseDTO save(UsuarioRequestDTO userDTO) {
+        if(userRepo.existsByUsername(userDTO.getUsername())){
+            throw new DuplicateResourceException(
+                    "El nombre de usuario " + userDTO.getUsername() + " ya esta registrado"            );
+        }
+
+        if (userRepo.existsByEmail(userDTO.getEmail())){
+            throw new DuplicateResourceException(
+                    "El email ya esta registrado"
+            );
+        }
+
         Usuario user = userMapper.toUsuario(userDTO);
 
         //Se asigna automaticamente el rol user a todos los usuarios nuevos, solo los admin pueden cambiar el rol
