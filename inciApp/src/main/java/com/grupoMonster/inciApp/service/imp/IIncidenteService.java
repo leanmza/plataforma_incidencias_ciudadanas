@@ -22,4 +22,6 @@ public interface IIncidenteService {
     IncidenteResponseDTO updateEstado(Long id, EstadoUpdateRequestDTO estadoRequestDTO);
 
     IncidenteResponseDTO updatePrioridad(Long id, PrioridadUpdateRequestDTO prioridadRequestDTO);
+
+    List<IncidenteResponseDTO> findIncidentesByUserId(String id);
 }

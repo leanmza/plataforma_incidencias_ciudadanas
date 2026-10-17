@@ -139,6 +139,12 @@ public class IncidenteService implements IIncidenteService {
         return incidenteMapper.toIncidenteResponseDTO(incidentePrioridadUpdated);
     }
 
+    @Override
+    public List<IncidenteResponseDTO> findIncidentesByUserId(String id) {
+        List<Incidente> misIncidentes = incidenteRepo.findByUsuarioId(id);
+        return incidenteMapper.toListIncidenteResponse(misIncidentes);
+    }
+
     private Incidente findIncidente(Long id) {
         return incidenteRepo.findById(id).orElseThrow(() -> new RuntimeException("Incidente no encontrado"));
     }

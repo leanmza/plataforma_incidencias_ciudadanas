@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,12 @@ public class IncidenteController {
     public ResponseEntity getIncidenteById(@PathVariable Long id) {
         IncidenteResponseDTO incidente = incidenteService.findById(id);
         return ResponseEntity.ok(incidente);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List> getIncidentesByUserId(@PathVariable String id){
+        List<IncidenteResponseDTO> misIncidentes = incidenteService.findIncidentesByUserId(id);
+        return ResponseEntity.ok(misIncidentes);
     }
 
     @PostMapping
