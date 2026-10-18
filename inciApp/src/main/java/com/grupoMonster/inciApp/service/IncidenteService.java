@@ -75,6 +75,7 @@ public class IncidenteService implements IIncidenteService {
         newIncidente.setEstado(estado);
         newIncidente.setUsuario(usuario);
         newIncidente.setFecha(LocalDate.now());
+        
 
         incidenteRepo.save(newIncidente);
         return incidenteMapper.toIncidenteResponseDTO(newIncidente);
