@@ -2,7 +2,7 @@
 
 Backend del proyecto final de **Programación II** y **Modelado de Software**.
 
-# Equipo
+## Equipo
 Leandro Hidalgo, Gonzalo Centeno, Walter Marín, Franco Barrera
 
 **Versión 1.0.0**
