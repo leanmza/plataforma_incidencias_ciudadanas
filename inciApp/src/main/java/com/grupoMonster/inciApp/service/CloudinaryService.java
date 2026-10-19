@@ -19,9 +19,9 @@ public class CloudinaryService implements ICloudinaryService {
     private final Cloudinary cloudinary;
 
     public CloudinaryService(
-            @Value("${CLOUD_NAME}") String cloudName,
-            @Value("${API_KEY}") String apiKey,
-            @Value("${API_SECRET}") String apiSecret) {
+            @Value("${cloud.name}") String cloudName,
+            @Value("${cloud.api.key}") String apiKey,
+            @Value("${cloud.api.secret}") String apiSecret) {
         Map<String,String> valuesMap = new HashMap<>();
         valuesMap.put("cloud_name", cloudName);
         valuesMap.put("api_key", apiKey);

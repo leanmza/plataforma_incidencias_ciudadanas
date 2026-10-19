@@ -1,6 +1,9 @@
 package com.grupoMonster.inciApp.dto.response;
 
+import com.grupoMonster.inciApp.model.Image;
+
 import java.time.LocalDate;
+import java.util.List;
 
 public record IncidenteResponseDTO(Long id,
                                    TipoResponseDTO tipo,
@@ -11,5 +14,6 @@ public record IncidenteResponseDTO(Long id,
                                    PrioridadResponseDTO prioridad,
                                    LocalidadNombreResponseDTO localidad,
                                    DepartamentoNombreResponseDTO departamento,
-                                   UsuarioResponseDTO usuario) {
+                                   UsuarioResponseDTO usuario,
+                                   List<ImageResponseDTO> images) {
 }

@@ -15,4 +15,6 @@ public interface IImageMapper {
     ImageResponseDTO toImageResponseDTO (Image image);
 
     List<ImageResponseDTO> toListImageResponse (List<Image> images);
+
+    Image toImageFromResponse (ImageResponseDTO imageResponseDTO);
 }

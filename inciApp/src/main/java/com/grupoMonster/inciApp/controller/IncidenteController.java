@@ -10,9 +10,10 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -41,8 +42,9 @@ public class IncidenteController {
     }
 
     @PostMapping
-    public ResponseEntity createIncidente(@RequestBody @Valid  IncidenteRequestDTO incidente) {
-        IncidenteResponseDTO newIncidente = incidenteService.save(incidente);
+    public ResponseEntity createIncidente(@RequestPart(value="incidente") @Valid  IncidenteRequestDTO incidente,
+                                          @RequestPart(value="images", required = true) List<MultipartFile> images) throws IOException {
+        IncidenteResponseDTO newIncidente = incidenteService.save(incidente, images);
         return ResponseEntity.ok(newIncidente);
     }
 

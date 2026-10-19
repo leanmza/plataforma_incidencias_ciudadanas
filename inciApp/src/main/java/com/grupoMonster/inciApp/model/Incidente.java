@@ -51,4 +51,5 @@ public class Incidente {
 
     @OneToMany(mappedBy = "incidente",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
+
 }

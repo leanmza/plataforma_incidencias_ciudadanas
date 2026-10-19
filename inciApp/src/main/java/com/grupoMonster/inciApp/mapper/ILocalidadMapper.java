@@ -1,7 +1,6 @@
 package com.grupoMonster.inciApp.mapper;
 
 import com.grupoMonster.inciApp.dto.request.LocalidadRequestDTO;
-import com.grupoMonster.inciApp.dto.response.LocalidadNombreResponseDTO;
 import com.grupoMonster.inciApp.dto.response.LocalidadResponseDTO;
 import com.grupoMonster.inciApp.model.Localidad;
 import org.mapstruct.Mapper;

@@ -1,8 +1,14 @@
 package com.grupoMonster.inciApp.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.grupoMonster.inciApp.model.Incidente;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ImageResponseDTO {
 
 
@@ -14,8 +20,6 @@ public class ImageResponseDTO {
     private String imageUrl;
 
 
-    private String cloudinaryId;
 
 
-    private Incidente incidente;
 }

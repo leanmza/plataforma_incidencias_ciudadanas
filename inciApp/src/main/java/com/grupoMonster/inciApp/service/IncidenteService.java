@@ -4,15 +4,20 @@ import com.grupoMonster.inciApp.dto.request.EstadoUpdateRequestDTO;
 import com.grupoMonster.inciApp.dto.request.IncidenteRequestDTO;
 import com.grupoMonster.inciApp.dto.request.PrioridadUpdateRequestDTO;
 import com.grupoMonster.inciApp.dto.response.IncidenteResponseDTO;
+import com.grupoMonster.inciApp.mapper.IImageMapper;
 import com.grupoMonster.inciApp.mapper.IIncidenteMapper;
 import com.grupoMonster.inciApp.model.*;
 import com.grupoMonster.inciApp.repository.IIncidenteRepository;
 import com.grupoMonster.inciApp.service.imp.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class IncidenteService implements IIncidenteService {
@@ -41,6 +46,13 @@ public class IncidenteService implements IIncidenteService {
     @Autowired
     private IIncidenteMapper incidenteMapper;
 
+    @Autowired
+    private ICloudinaryService cloudinaryService;
+
+    @Autowired
+    private IImageService imageService;
+
+
     private static final String PRIORIDAD_DEFAULT = "MEDIA";
     private static final String ESTADO_DEFAULT = "PENDIENTE";
 
@@ -58,11 +70,9 @@ public class IncidenteService implements IIncidenteService {
     }
 
     @Override
-    public IncidenteResponseDTO save(IncidenteRequestDTO incidente) {
+    public IncidenteResponseDTO save(IncidenteRequestDTO incidente, List<MultipartFile> images) throws IOException {
         Incidente newIncidente = incidenteMapper.toIncidente(incidente);
 
-        Prioridad prioridad = findPrioridad(PRIORIDAD_DEFAULT);
-        Estado estado = findEstado(ESTADO_DEFAULT);
         Usuario usuario = usuarioService.findByUsername(incidente.getUsername());
         Localidad localidad = findLocalidad(incidente.getIdLocalidad());
         Departamento departamento = findDepartamento(incidente.getIdDepartamento());
@@ -70,40 +80,47 @@ public class IncidenteService implements IIncidenteService {
 
         newIncidente.setLocalidad(localidad);
         newIncidente.setDepartamento(departamento);
-        newIncidente.setPrioridad(prioridad);
+        newIncidente.setPrioridad(findPrioridad(PRIORIDAD_DEFAULT));
         newIncidente.setTipo(tipo);
-        newIncidente.setEstado(estado);
+        newIncidente.setEstado(findEstado(ESTADO_DEFAULT));
         newIncidente.setUsuario(usuario);
         newIncidente.setFecha(LocalDate.now());
-        
+
+        newIncidente.getImages().addAll(imageHandler(images, newIncidente));
 
         incidenteRepo.save(newIncidente);
+
+//        List<Image> imageList = imageHandler(images, newIncidente);
+//
+//        newIncidente.setImages(imageList);
+
         return incidenteMapper.toIncidenteResponseDTO(newIncidente);
     }
+
 
     @Override
     public IncidenteResponseDTO update(Long id, IncidenteRequestDTO incidente) {
         Incidente updatedIncidente = findIncidente(id);
 
-        if (incidente.getDescripcion() != null || !incidente.getDescripcion().isBlank()){
+        if (incidente.getDescripcion() != null || !incidente.getDescripcion().isBlank()) {
             updatedIncidente.setDescripcion(incidente.getDescripcion());
         }
 
-        if (incidente.getDireccion() != null || !incidente.getDireccion().isBlank()){
+        if (incidente.getDireccion() != null || !incidente.getDireccion().isBlank()) {
             updatedIncidente.setDescripcion(incidente.getDireccion());
         }
 
-        if(incidente.getIdLocalidad() != null){
+        if (incidente.getIdLocalidad() != null) {
             Localidad localidad = findLocalidad(incidente.getIdLocalidad());
             updatedIncidente.setLocalidad(localidad);
         }
 
-        if (incidente.getIdDepartamento() != null){
+        if (incidente.getIdDepartamento() != null) {
             Departamento departamento = findDepartamento(incidente.getIdDepartamento());
             updatedIncidente.setDepartamento(departamento);
         }
 
-        if (incidente.getIdTipo() != null){
+        if (incidente.getIdTipo() != null) {
             Tipo tipo = findTipo(incidente.getIdTipo());
             updatedIncidente.setTipo(tipo);
         }
@@ -170,4 +187,29 @@ public class IncidenteService implements IIncidenteService {
         return prioridadService.findByPrioridad(prioridad);
     }
 
+
+    private List<Image> imageHandler(List<MultipartFile> images, Incidente incidente) throws IOException {
+        List<Image> imageList = new ArrayList<>();
+
+        for (MultipartFile image : images) {
+            try {
+                Map cloudinaryResult = cloudinaryService.upload(image);
+
+                Image newImage = new Image();
+                newImage.setName(image.getOriginalFilename());
+                newImage.setImageUrl((String) cloudinaryResult.get("secure_url"));
+                newImage.setCloudinaryId((String) cloudinaryResult.get("public_id"));
+                newImage.setIncidente(incidente);
+
+                imageList.add(newImage);
+            } catch (IOException | RuntimeException e) {
+                // Si falla una, borrar de Cloudinary las que ya se subieron
+                for (Image subida : imageList) {
+                    try { cloudinaryService.delete(subida.getCloudinaryId()); } catch (Exception ignored) {}
+                }
+                throw new IOException("Error en la carga de las imágenes", e);
+            }
+        }
+        return imageList;
+    }
 }
