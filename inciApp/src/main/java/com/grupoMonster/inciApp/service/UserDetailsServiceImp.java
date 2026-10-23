@@ -7,6 +7,7 @@ import com.grupoMonster.inciApp.repository.IUsuarioRepository;
 import com.grupoMonster.inciApp.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +37,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = userRepo.findUserEntityByUsername(username)
+        Usuario usuario = userRepo.findFirstByUsernameOrEmail(username, username)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + "was not found"));
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
@@ -70,13 +71,22 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     public Authentication autheticate (String username, String password){
-        UserDetails userDetails = this.loadUserByUsername(username);
+        UserDetails userDetails ;
+        try {
+            userDetails = this.loadUserByUsername(username);
+        } catch (UsernameNotFoundException e) {
+            throw new BadCredentialsException("Usuario o contraseña incorrectos");
+        }
 
         if(userDetails == null){
             throw new BadCredentialsException("Invalid username or password");
         }
         if(!passwordEncoder.matches(password, userDetails.getPassword())){
             throw new BadCredentialsException("Invalid password");
+        }
+
+        if(!userDetails.isEnabled()){
+            throw  new DisabledException("La cuanta está deshabilitada");
         }
         return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
     }

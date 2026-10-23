@@ -1,5 +1,6 @@
 package com.grupoMonster.inciApp.config.filter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.grupoMonster.inciApp.utils.JwtUtils;
 import jakarta.annotation.Nonnull;
@@ -21,33 +22,39 @@ import java.util.Collection;
 public class JwtTokenValidator extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
-    public JwtTokenValidator(JwtUtils jwtUtils){
+    public JwtTokenValidator(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
 
     @Override
     protected void doFilterInternal(@Nonnull HttpServletRequest request,
                                     @Nonnull HttpServletResponse response,
-                                    @Nonnull FilterChain filterChain) throws ServletException, IOException{
+                                    @Nonnull FilterChain filterChain) throws ServletException, IOException {
 
-        String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (jwtToken != null){
-            jwtToken = jwtToken.substring(7);
-            DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
+        if (header != null && header.startsWith("Bearer ")) {
+            header = header.substring(7);
+            try {
+                DecodedJWT decodedJWT = jwtUtils.validateToken(header);
 
-            String username = jwtUtils.extractUsername(decodedJWT);
+                String username = jwtUtils.extractUsername(decodedJWT);
 
-            String authorities = jwtUtils.getSpecificClaim(decodedJWT, "authorities").asString();
+                String authorities = jwtUtils.getSpecificClaim(decodedJWT, "authorities").asString();
 
-            Collection authoritiesList = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+                Collection authoritiesList =
+                        AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
 
-            SecurityContext context = SecurityContextHolder.getContext();
-            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authoritiesList);
-            context.setAuthentication(authentication);
-            SecurityContextHolder.setContext(context);
+                SecurityContext context = SecurityContextHolder.getContext();
+                Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authoritiesList);
+                context.setAuthentication(authentication);
+                SecurityContextHolder.setContext(context);
+            } catch (JWTVerificationException e) {
+                SecurityContextHolder.clearContext();
+            }
+
+
         }
-
         filterChain.doFilter(request, response);
     }
 }

@@ -1,5 +1,6 @@
 package com.grupoMonster.inciApp.service;
 
+import com.grupoMonster.inciApp.dto.request.PasswordRequestDTO;
 import com.grupoMonster.inciApp.dto.request.UsuarioRequestDTO;
 import com.grupoMonster.inciApp.dto.request.UsuarioUpdateRequestDTO;
 import com.grupoMonster.inciApp.dto.response.UsuarioResponseDTO;
@@ -8,8 +9,11 @@ import com.grupoMonster.inciApp.mapper.IUserMapper;
 import com.grupoMonster.inciApp.model.*;
 import com.grupoMonster.inciApp.repository.IUsuarioRepository;
 import com.grupoMonster.inciApp.service.imp.*;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -53,15 +57,14 @@ public class UsuarioService implements IUsuarioService {
     }
 
 
-
     @Override
     public UsuarioResponseDTO save(UsuarioRequestDTO userDTO) {
-        if(userRepo.existsByUsername(userDTO.getUsername())){
+        if (userRepo.existsByUsername(userDTO.getUsername())) {
             throw new DuplicateResourceException(
-                    "El nombre de usuario " + userDTO.getUsername() + " ya esta registrado"            );
+                    "El nombre de usuario " + userDTO.getUsername() + " ya esta registrado");
         }
 
-        if (userRepo.existsByEmail(userDTO.getEmail())){
+        if (userRepo.existsByEmail(userDTO.getEmail())) {
             throw new DuplicateResourceException(
                     "El email ya esta registrado"
             );
@@ -71,7 +74,7 @@ public class UsuarioService implements IUsuarioService {
 
         //Se asigna automaticamente el rol user a todos los usuarios nuevos, solo los admin pueden cambiar el rol
         Role defaultRole = roleService.findByName(DEFAULT_ROLE)
-                .orElseThrow(()-> new RuntimeException("No existe el rol por defecto " + DEFAULT_ROLE));
+                .orElseThrow(() -> new RuntimeException("No existe el rol por defecto " + DEFAULT_ROLE));
 
         Provincia provincia = provinciaService.findProvincia(userDTO.getIdProvincia());
         Departamento departamento = departamentoService.findDepartamento(userDTO.getIdDepartamento());
@@ -136,13 +139,53 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario findByUsername(String username) {
-        return  userRepo.findUserEntityByUsername(username)
-                .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+        return userRepo.findUserEntityByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+    }
+
+    @Override
+    public UsuarioResponseDTO findMe(Authentication authentication) {
+        Usuario usuario = findByUsername(authentication.getName());
+        return userMapper.toUsuarioResponse(usuario);
+    }
+
+    @Override
+    public UsuarioResponseDTO updateMe(Authentication authentication, UsuarioUpdateRequestDTO usuarioUpdateRequestDTO) {
+
+        Usuario updatedUsuario = findByUsername(authentication.getName());
+
+        updatedUsuario.setName(usuarioUpdateRequestDTO.getName());
+        updatedUsuario.setLastname(usuarioUpdateRequestDTO.getLastname());
+
+        updatedUsuario.setEmail(usuarioUpdateRequestDTO.getEmail());
+        updatedUsuario.setDni(usuarioUpdateRequestDTO.getDni());
+        updatedUsuario.setTelefono(usuarioUpdateRequestDTO.getTelefono());
+        updatedUsuario.setDireccion(usuarioUpdateRequestDTO.getDireccion());
+        updatedUsuario.setFechaNacimiento(usuarioUpdateRequestDTO.getFechaNacimiento());
+
+        userRepo.save(updatedUsuario);
+        return userMapper.toUsuarioResponse(updatedUsuario);
+    }
+
+    @Override
+    public void changePassword(Authentication authentication, PasswordRequestDTO passwordRequestDTO) {
+        Usuario user = findByUsername(authentication.getName());
+
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!encoder.matches(passwordRequestDTO.currentPassword(), user.getPassword())){
+            throw  new IllegalArgumentException("La contraseña actual es incorrecta");
+        }
+
+        if(passwordRequestDTO.currentPassword().equals(passwordRequestDTO.newPassword())){
+            throw new IllegalArgumentException("La nueva contraseña no puede ser igual a la actual");
+        }
+        user.setPassword(encriptPassword(passwordRequestDTO.newPassword()));
+        userRepo.save(user);
     }
 
     private Usuario findUsuario(String id) {
         return userRepo.findById(id)
-                .orElseThrow(()->new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 }
